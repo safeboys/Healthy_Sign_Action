@@ -5,19 +5,14 @@ name: Healthy_Sign_Action
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+
+  # Script Run Time
   schedule:
     - cron: 30 06 * * *
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-env:
-  username: ${{ secrets.USERNAME }}
-  password: ${{ secrets.PASSWORD }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,4 +28,8 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run Script
-        run: python healthy.py
+        env:
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+        run: |
+          python healthy.py
