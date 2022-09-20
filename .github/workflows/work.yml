@@ -4,9 +4,6 @@ name: Healthy_Sign_Action
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-
   # Script Run Time
   schedule:
     - cron: 30 06 * * *
@@ -25,11 +22,18 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          
+      - name: Install Packages
+        run: pip isntall -r requirements.txt
+      
       # Runs a single command using the runners shell
       - name: Run Script
         env:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-        run: |
-          python healthy.py
+        run: python healthy.py
