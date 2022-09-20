@@ -36,6 +36,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run Script
         env:
+          push: ${{ secrets.PUSH_KEY }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
         run: python healthy.py
