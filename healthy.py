@@ -3,8 +3,6 @@ import requests
 import json
 from hashlib import md5
 
-def 
-
 if __name__ == "__main__":
   push = os.environ["push"]
   username = os.environ["username"]
