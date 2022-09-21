@@ -27,7 +27,7 @@ if __name__ == "__main__":
   res = request.post(url,headers=header,data=body)
   text = json.loads(res.text)
   if res.status_code == 200 and text.get('error',0) == True:
-    print(text.msg)
+    print(text['msg'])
     print("服务器返回错误，程序终止...")
     exit(0)
   print("登录成功，开始打卡...")
