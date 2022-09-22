@@ -5,8 +5,19 @@
 import os
 import requests
 import json
+from bs4 import BeautifulSoup
 from time import sleep
+from time import time
 from hashlib import md5
+
+def timeStamp():
+  return str(int(round(time()*1000)))
+
+def token(request,header):
+  url = 'http://xggl.hnqczy.com/wap/menu/student/temp/zzdk/_child_/edit?_t_s_=' + timeStamp()
+  res = request.get(url,headers=header)
+  html = BeautifulSoup(res.text,'html.parser')
+  return html.find(id='zzdk_token').get('value')
 
 def notice(key,title,msg):
   #推送通知消息
@@ -58,4 +69,48 @@ if __name__ == "__main__":
     exit(0)
   print("[Process]Info: 登录成功，开始打卡...")
   
+  #获取上次的打卡信息
+  url = 'http://xggl.hnqczy.com/content/student/temp/zzdk/lastone?_t_s_=' + timeStamp()
+  res = request.get(url,headers=header)
+  data = json.loads(res.text)
+  
   #开始打卡
+  body = {
+    'dkdz':data['dkdz'],
+    'dkdzZb':'113.134,27.8275',
+    'dkly':data['dkly'],
+    'zzdk_token':token(request,header),
+    'dkd':data['dkd'],
+    'jzdValue':'%s,%s,%s' % (data['jzdSheng']['dm'], data['jzdShi']['dm'], data['jzdXian']['dm']),
+    'jzdSheng.dm':data['jzdSheng']['dm'],
+    'jzdShi.dm':data['jzdShi']['dm'],
+    'jzdXian.dm':data['jzdXian']['dm'],
+    'jzdDz':data['jzdDz'],
+    'jzdDz2':data['jzdDz2'],
+    'lxdh':data['lxdh'],
+    'sfzx':data['sfzx'],
+    'sfzx1':(['不在校','在校'])[int(data['sfzx'])],
+    'twM.dm':'01', 'tw1':'[35.0~37.2]正常',
+    'yczk.dm':'01', 'yczk1':'无症状',
+    'jzInd':'0', 'brStzk.dm':'01', 'brStzk1':'身体健康、无异常',
+    'brJccry.dm':'01', 'brJccry1':'未接触传染源',
+    'jrStzk.dm':'01', 'jrStzk1':'身体健康、无异常',
+    'jrJccry.dm':'01', 'jrJccry1':'未接触传染源',
+    'jkm':'1', 'jkml':'绿色', 'xcm':'1', 'xcm1':'绿色',
+    'xgym':'3', 'xgym1':'', 'operationType':'Create'
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
