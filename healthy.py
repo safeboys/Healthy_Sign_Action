@@ -99,9 +99,9 @@ if __name__ == "__main__":
     'jkm':'1', 'jkml':'绿色', 'xcm':'1', 'xcm1':'绿色',
     'xgym':'3', 'xgym1':'', 'operationType':'Create'
   }
-  
-  
-  
+  url = 'http://xggl.hnqczy.com/content/student/temp/zzdk?_t_s_=' + timeStamp()
+  res = request.post(url,headers=header,data=body)
+  text = json.loads(res.text)
   
   
   
