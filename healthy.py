@@ -73,6 +73,7 @@ if __name__ == "__main__":
   url = 'http://xggl.hnqczy.com/content/student/temp/zzdk/lastone?_t_s_=' + timeStamp()
   res = request.get(url,headers=header)
   data = json.loads(res.text)
+  print("[Process]Info: 获取上次打卡信息成功...")
   
   #开始打卡
   body = {
@@ -102,7 +103,7 @@ if __name__ == "__main__":
   url = 'http://xggl.hnqczy.com/content/student/temp/zzdk?_t_s_=' + timeStamp()
   res = request.post(url,headers=header,data=body)
   text = json.loads(res.text)
-  
+  print(text)
   
   
   
