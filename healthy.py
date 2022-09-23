@@ -5,6 +5,7 @@
 import os
 import requests
 import json
+from datetime import datetime
 from bs4 import BeautifulSoup
 from time import sleep
 from time import time
@@ -20,13 +21,14 @@ def token(request,header):
   return html.find(id='zzdk_token').get('value')
 
 def notice(key,title,msg):
+  print(msg)
   #推送通知消息
   url = 'https://sctapi.ftqq.com/%s.send' % key
   body = { 'title':'每日打卡运行日志-%s' % title ,'desp':msg }
   res = requests.post(url,data=body)
   text = json.loads(res.text)
   if text['code'] != 0:
-    print("[SCTPUSH]Error: " + text['info'])
+    print("[SCTPUSH]Error: 推送失败,错误信息: " + text['info'])
     return
   pushid = text['data']['pushid']
   readkey = text['data']['readkey']
@@ -100,18 +102,15 @@ if __name__ == "__main__":
     'jkm':'1', 'jkml':'绿色', 'xcm':'1', 'xcm1':'绿色',
     'xgym':'3', 'xgym1':'', 'operationType':'Create'
   }
+  print("[Process]Info: 打卡信息: %s" % (body))
   url = 'http://xggl.hnqczy.com/content/student/temp/zzdk?_t_s_=' + timeStamp()
   res = request.post(url,headers=header,data=body)
   text = json.loads(res.text)
-  print(text)
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  if text['result'] == False:
+    print("[Process]Error: %s" % text['errorInfoList'][0]['message'])
+    print("[Process]Info: 打卡失败，推送失败信息...")
+    notice(push,"打卡失败","操作用户：%s\n操作日志：%s\n操作时间：%s(UTC)" % (username,text['errorInfoList'][0]['message'],str(datetime.now())))
+  else:
+    print("[Process]Info: 打卡成功，推送成功信息...")
+    notice(push,"打卡成功","操作用户：%s\n操作日志：%s\n操作时间：%s(UTC)" % (username,"无异常",str(datetime.now())))
+print("[Process]Info: 程序运行完成...")
