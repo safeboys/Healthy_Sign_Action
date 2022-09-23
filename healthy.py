@@ -21,7 +21,6 @@ def token(request,header):
   return html.find(id='zzdk_token').get('value')
 
 def notice(key,title,msg):
-  print(msg)
   #推送通知消息
   url = 'https://sctapi.ftqq.com/%s.send' % key
   body = { 'title':'每日打卡运行日志-%s' % title ,'desp':msg }
@@ -109,8 +108,8 @@ if __name__ == "__main__":
   if text['result'] == False:
     print("[Process]Error: %s" % text['errorInfoList'][0]['message'])
     print("[Process]Info: 打卡失败，推送失败信息...")
-    notice(push,"打卡失败","操作用户：%s\n操作日志：%s\n操作时间：%s(UTC)" % (username,text['errorInfoList'][0]['message'],str(datetime.now())))
+    notice(push,"打卡失败","操作用户：%s<br>操作日志：%s<br>操作时间：%s(UTC)" % (username,text['errorInfoList'][0]['message'],str(datetime.now())))
   else:
     print("[Process]Info: 打卡成功，推送成功信息...")
-    notice(push,"打卡成功","操作用户：%s\n操作日志：%s\n操作时间：%s(UTC)" % (username,"无异常",str(datetime.now())))
+    notice(push,"打卡成功","操作用户：%s<br>操作日志：%s<br>操作时间：%s(UTC)" % (username,"无异常",str(datetime.now())))
 print("[Process]Info: 程序运行完成...")
